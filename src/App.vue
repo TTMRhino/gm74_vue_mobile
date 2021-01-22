@@ -1,79 +1,87 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    
-      <el-col :span="24">     
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b"
-           unique-opened='true'
-           
-          >
+  <img src="/assets/images/logo.png" alt="logo" class="logo">
 
+  <div class="header">
+    <h3> <i class="el-icon-phone"></i> +7 9000-741-791</h3>
+    <p>
+      с 9:00 до 19:00 с ПН. по ПТ.
+    Заказы на сайте принимаются 24/7
+    </p>
+  </div> 
 
-          <el-submenu index="1">
+      <div id="nav">
+    <!-- Nav мею -->
+  <el-col :span="24"> 
 
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>Товар</span>
-            </template>
+    <el-menu     
+      class="el-menu-demo"
+      mode="horizontal"
+      
+      background-color="#cc0104"
+      text-color="azure"
+      active-text-color="azure">
 
-            <el-submenu index="1-1">
-             <template slot="title">Группа№1</template>
-              <el-menu-item index="1-1-1"                
-                @click="clickMenu($event)"
-              >Под_Группа№1
-              </el-menu-item>              
-            </el-submenu>
+      <el-submenu index="1">
+        <template slot="title"><i class="el-icon-s-order"></i></template>
+        <el-menu-item index="1-1"><router-link to="/">GoodMarket74</router-link></el-menu-item>
+        <el-menu-item index="1-2"><router-link to="/catalog">Каталог</router-link></el-menu-item>
+        <el-menu-item index="1-3"><router-link to="/">О Нас</router-link></el-menu-item>
+        <el-menu-item index="1-4"><router-link to="/">Оплата и доставка</router-link></el-menu-item>
+        <el-menu-item index="1-5"><router-link to="/">Конатакты</router-link></el-menu-item>
+        
+        
+      </el-submenu> 
+  </el-menu>
 
-            <el-submenu index="1-2">
-             <template slot="title">Группа№2</template>
-              <el-menu-item index="1-2-1" 
-              @click="clickMenu($event)"
-              >Под_Группа№1</el-menu-item>
-              <el-menu-item index="1-2-2"
-              @click="clickMenu($event)"
-              >Под_Группа№2</el-menu-item>              
-            </el-submenu>
-
-            <el-submenu index="1-3">
-             <template slot="title">Группа№3</template>
-              <el-menu-item index="1-3-1"
-              @click="clickMenu($event)"
-              >Под_Группа№1</el-menu-item>
-              <el-menu-item index="1-3-2"
-              @click="clickMenu($event)"
-              >Под_Группа№2</el-menu-item>
-              <el-menu-item index="1-3-3"
-              @click="clickMenu($event)"
-              >Под_Группа№3</el-menu-item>               
-            </el-submenu>
-
-          </el-submenu>
-        </el-menu>
-      </el-col>
-
+ </el-col>
+     
 
     </div>
-    <router-view/>
+   <router-view></router-view>
   </div>
 </template>
 
 <script>
   export default {
-  
-    methods: {
-     
-      clickMenu(subgroup){
-        //console.log(subgroup.$el.innerText + " "+ index);
-        console.log(subgroup.$el);       
-       
-      }
-    }
+    
   }
 </script>
+
+
+<style scoped>
+.logo {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    display: block;
+}
+.header{
+background-color: #202020;
+margin-top: 0px;
+margin-bottom: 0px;
+color: azure;
+text-align: center;
+display: block;
+}
+.header h3, .header p{
+margin-top: 0px;
+margin-bottom: 0px;
+padding-bottom: 5px;
+}
+.el-menu-demo i{
+color: azure;
+}
+
+.el-menu-demo{
+color: azure;
+}
+.el-menu.el-menu--horizontal{
+border-bottom-width: 0px;
+}
+
+
+
+</style>
