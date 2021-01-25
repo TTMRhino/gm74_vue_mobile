@@ -8,6 +8,14 @@
       с 9:00 до 19:00 с ПН. по ПТ.
     Заказы на сайте принимаются 24/7
     </p>
+    <router-link to="/cart">
+      <div class="cart">
+        <i aria-hidden="true" class="el-icon-shopping-cart-1"></i>
+        <span> 0 </span>
+        <span> Итого: </span>
+        0
+      </div>
+    </router-link>
   </div> 
 
       <div id="nav">
@@ -18,18 +26,19 @@
       class="el-menu-demo"
       mode="horizontal"
       
-      background-color="#cc0104"
+      background-color="#af4d14"
       text-color="azure"
       active-text-color="azure">
 
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-s-order"></i></template>
-        <el-menu-item index="1-1"><router-link to="/">GoodMarket74</router-link></el-menu-item>
-        <el-menu-item index="1-2"><router-link to="/catalog">Каталог</router-link></el-menu-item>
-        <el-menu-item index="1-3"><router-link to="/">О Нас</router-link></el-menu-item>
-        <el-menu-item index="1-4"><router-link to="/">Оплата и доставка</router-link></el-menu-item>
-        <el-menu-item index="1-5"><router-link to="/">Конатакты</router-link></el-menu-item>
-        
+               
+        <el-menu-item index="1-1"><router-link to="/" class="link-menu">GoodMarket74</router-link></el-menu-item>
+
+        <el-menu-item index="1-2"><router-link to="/catalog" class="link-menu">Каталог</router-link></el-menu-item>
+        <el-menu-item index="1-3"><router-link to="/about" class="link-menu">О Нас</router-link></el-menu-item>
+        <el-menu-item index="1-4"><router-link to="/delivery" class="link-menu">Оплата и доставка</router-link></el-menu-item>
+        <el-menu-item index="1-5"><router-link to="/contacts" class="link-menu">Конатакты</router-link></el-menu-item>       
         
       </el-submenu> 
   </el-menu>
@@ -39,7 +48,9 @@
 
     </div>
    <router-view></router-view>
+
   </div>
+  
 </template>
 
 <script>
@@ -82,6 +93,23 @@ color: azure;
 border-bottom-width: 0px;
 }
 
+.link-menu{
+  color: aliceblue;
+  text-decoration:none;
+}
+/*   Корзина  */
+.cart{
+background-color: #ffffff;
+height: 30px;
+width: 240px;
+font-size:1.3rem;
+color: cornflowerblue;
+border-radius: 10px;
+margin: auto;
+    margin-top: auto;
+margin-top: 10px;
+padding-bottom:5px;
+}
 
 
 </style>

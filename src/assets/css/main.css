@@ -1,3 +1,13 @@
 body {
     margin: 0px;
+    background-color: #3a3a3a;
+    color: aliceblue;
+}
+
+footer {
+    /* position: absolute;
+    padding-top: 30px;*/
+    bottom: 0;
+    width: 100%;
+    background-color: #202020;
 }

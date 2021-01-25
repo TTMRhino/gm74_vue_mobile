@@ -1,13 +1,13 @@
 <template>
   <div class="catalog">
-
+  <h2 class="title">Каталог</h2>
    <!-- меню товара -->
     
       <el-col :span="24">     
         <el-menu
           default-active="2"
           class="el-menu-vertical-demo"
-          background-color="#545c64"
+          background-color="#af4d14"
           text-color="#fff"
           active-text-color="#ffd04b"
            unique-opened="true"
@@ -57,15 +57,49 @@
         </el-menu>
       </el-col>
 
-  <h1>Catalog</h1>
+
+    <!-- Карточки товаров -->
+      <el-row>
+      <el-col  >
+        <el-card :body-style="{ padding: '0px' }" class="card">
+          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+          <div style="padding: 14px;">
+            <span>Yummy hamburger</span>
+            <div class="bottom clearfix">
+              <time class="time">{{ currentDate }}</time>
+              <el-button type="text" class="button">Operating</el-button>
+            </div>
+          </div>
+        </el-card>
+
+
+
+        <el-card :body-style="{ padding: '0px' }" class="card">
+          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+          <div style="padding: 14px;">
+            <span>Yummy hamburger</span>
+            <div class="bottom clearfix">
+              <time class="time">{{ currentDate }}</time>
+              <el-button type="text" class="button">Operating</el-button>
+            </div>
+          </div>
+        </el-card>
+
+
+
+      </el-col>
+    </el-row>
    
-  </div>
+</div>
 </template>
 
 <script>
-export default{
-  
- 
+export default {
+  data() {
+    return {
+      currentDate: new Date()
+    };
+  }
 }
 </script>
 
@@ -74,7 +108,43 @@ export default{
 .el-icon-sell{
 color:azure;
 }
+.title{
+margin-bottom: 1px;
+text-align: center;
+}
+/*картрочки товара*/
+.time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
 
+  .button {
+    padding: 0;
+    float: right;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
+  .card{
+  margin: 5px;
+  }
 </style>
 
 
