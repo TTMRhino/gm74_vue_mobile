@@ -2,61 +2,42 @@
   <div class="catalog">
   <h2 class="title">Каталог</h2>
    <!-- меню товара -->
-    
+    <el-row>
       <el-col :span="24">     
         <el-menu
           default-active="2"
-          class="el-menu-vertical-demo"
-          background-color="#af4d14"
+          class="el-menu-vertical-demo"          
           text-color="#fff"
           active-text-color="#ffd04b"
            unique-opened="true"
            
           >
 
-
-          <el-submenu index="1">
+<!--background-color="#af4d14"-->
+          <el-submenu index="999">
 
             <template slot="title">
               <i class="el-icon-sell"></i>              
-              <span>Товар</span>
+              <span>Группы товаров</span>
             </template>
 
-            <el-submenu index="1-1">
-             <template slot="title">Группа№1</template>
-              <el-menu-item index="1-1-1"                
+            <el-submenu :index="'' + Group.id" 
+             v-for="mainGroup of mainGroups" :key="mainGroup.id"
+             
+             >
+             <template slot="title" >{{ mainGroup.title }}</template>
+
+              <el-menu-item index= "1-1-1"                  
                 @click="clickMenu($event)"
               >Под_Группа№1
               </el-menu-item>              
             </el-submenu>
-
-            <el-submenu index="1-2">
-             <template slot="title">Группа№2</template>
-              <el-menu-item index="1-2-1" 
-              @click="clickMenu($event)"
-              >Под_Группа№1</el-menu-item>
-              <el-menu-item index="1-2-2"
-              @click="clickMenu($event)"
-              >Под_Группа№2</el-menu-item>              
-            </el-submenu>
-
-            <el-submenu index="1-3">
-             <template slot="title">Группа№3</template>
-              <el-menu-item index="1-3-1"
-              @click="clickMenu($event)"
-              >Под_Группа№1</el-menu-item>
-              <el-menu-item index="1-3-2"
-              @click="clickMenu($event)"
-              >Под_Группа№2</el-menu-item>
-              <el-menu-item index="1-3-3"
-              @click="clickMenu($event)"
-              >Под_Группа№3</el-menu-item>               
-            </el-submenu>
+            
 
           </el-submenu>
         </el-menu>
       </el-col>
-
+    </el-row>
 
     <!-- Карточки товаров -->
       <el-row>
@@ -97,9 +78,48 @@
 export default {
   data() {
     return {
-      currentDate: new Date()
-    };
+      currentDate: new Date(),
+      subGroups:[],
+      mainGroups:[],
+      //group:[],
+    };    
+  },
+  methods:{
+    getMainGroups(){
+      this.$http.get('http://symfony74/api/main_groups',{headers: {'accept': 'application/json' }})
+      .then(response => {
+        return response.json()
+        })
+        .then(mainGroups => {          
+          this.mainGroups = mainGroups
+           let group=mainGroups.filter(mainGroup.id=>)
+              
+        });      
+        
+      },
+
+      getSubGroups(){
+        this.$http.get('http://symfony74/api/sub_groups', {headers: {'accept': 'application/json' }})
+        .then(response => {
+          return response.json()
+        })
+        .then(subGroups => {
+          this.subGroups = subGroups
+
+          //return subGroups
+        })
+        
+       
+      }
+  },
+  mounted: function (){    
+        this.getMainGroups();
+        this.getSubGroups();
+        
+       //console.log(this.subGroups);
+        
   }
+ 
 }
 </script>
 
@@ -145,6 +165,21 @@ text-align: center;
   .card{
   margin: 5px;
   }
+   .el-menu{
+    background-color:royalblue;
+  }
+  
+  .el-submenu{
+   background-color:#af4d14;
+  }
+  .el-menu-item{
+    background-color:#9b4412;
+  }
+  .el-menu-item:focus{
+  background-color:#7c370e;
+  }
+ 
+  
 </style>
 
 
