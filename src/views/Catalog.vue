@@ -9,7 +9,7 @@
           class="el-menu-vertical-demo"          
           text-color="#fff"
           active-text-color="#ffd04b"
-           unique-opened="true"
+           :unique-opened="true"
            
           >
 
@@ -21,15 +21,17 @@
               <span>Группы товаров</span>
             </template>
 
-            <el-submenu :index="'' + Group.id" 
+            <el-submenu :index="'' + mainGroup.id" 
              v-for="mainGroup of mainGroups" :key="mainGroup.id"
              
              >
              <template slot="title" >{{ mainGroup.title }}</template>
 
-              <el-menu-item index= "1-1-1"                  
-                @click="clickMenu($event)"
-              >Под_Группа№1
+              <el-menu-item :index=" '1-'+subGroup.id"
+              v-for="subGroup of mainGroup['subgroup']" :key="subGroup.id"                  
+                @click="clickMenu(subGroup.id)"
+              >
+              {{ subGroup.title }}
               </el-menu-item>              
             </el-submenu>
             
@@ -78,45 +80,28 @@
 export default {
   data() {
     return {
-      currentDate: new Date(),
-      subGroups:[],
-      mainGroups:[],
-      //group:[],
+      currentDate: new Date(),      
+      mainGroups:[],     
     };    
   },
   methods:{
-    getMainGroups(){
+      //реализация загрузки меню через API
+     getMainGroups(){
       this.$http.get('http://symfony74/api/main_groups',{headers: {'accept': 'application/json' }})
       .then(response => {
         return response.json()
         })
         .then(mainGroups => {          
-          this.mainGroups = mainGroups
-           let group=mainGroups.filter(mainGroup.id=>)
-              
-        });      
-        
+          this.mainGroups = mainGroups                         
+            });           
       },
-
-      getSubGroups(){
-        this.$http.get('http://symfony74/api/sub_groups', {headers: {'accept': 'application/json' }})
-        .then(response => {
-          return response.json()
-        })
-        .then(subGroups => {
-          this.subGroups = subGroups
-
-          //return subGroups
-        })
-        
-       
-      }
-  },
-  mounted: function (){    
-        this.getMainGroups();
-        this.getSubGroups();
-        
-       //console.log(this.subGroups);
+      clickMenu(id){
+        console.log(id);
+      }       
+      },     
+ 
+  mounted: function (){  //закачиваем групы и под группы из апи при старте компонента  
+        this.getMainGroups();      
         
   }
  
