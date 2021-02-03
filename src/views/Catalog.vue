@@ -44,31 +44,22 @@
     <!-- Карточки товаров -->
       <el-row>
       <el-col  >
-        <el-card :body-style="{ padding: '0px' }" class="card">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+
+        <el-card 
+        :body-style="{ padding: '0px' }" 
+        class="card"
+        v-for="item of items" :key="item.id"
+        >
+          <img :src="'https://127.0.0.1:8000/images/l'+ item.vendor +'.jpg'" class="image">
           <div style="padding: 14px;">
-            <span>Yummy hamburger</span>
+            <span>{{ item.item }}</span>
             <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
+              <time class="time">{{ item.description }}</time>
+              <h3>{{item.price}} руб.</h3>
               <el-button type="text" class="button">Operating</el-button>
             </div>
           </div>
         </el-card>
-
-
-
-        <el-card :body-style="{ padding: '0px' }" class="card">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-          <div style="padding: 14px;">
-            <span>Yummy hamburger</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button">Operating</el-button>
-            </div>
-          </div>
-        </el-card>
-
-
 
       </el-col>
     </el-row>
@@ -81,13 +72,14 @@ export default {
   data() {
     return {
       currentDate: new Date(),      
-      mainGroups:[],     
+      mainGroups:[],
+      items:[],     
     };    
   },
   methods:{
       //реализация загрузки меню через API
      getMainGroups(){
-      this.$http.get('http://symfony74/api/main_groups',{headers: {'accept': 'application/json' }})
+      this.$http.get('https://127.0.0.1:8000/api/main_groups',{headers: {'accept': 'application/json' }})
       .then(response => {
         return response.json()
         })
@@ -97,11 +89,21 @@ export default {
       },
       clickMenu(id){
         console.log(id);
+      },
+      getItems(){
+        this.$http.get('https://127.0.0.1:8000/api/items', {headers: {'accept': 'application/json' }})
+        .then(response =>{
+          return response.json()
+        })
+        .then(items =>{
+          this.items = items
+        });
       }       
       },     
  
   mounted: function (){  //закачиваем групы и под группы из апи при старте компонента  
-        this.getMainGroups();      
+        this.getMainGroups(); 
+        this.getItems();     
         
   }
  
