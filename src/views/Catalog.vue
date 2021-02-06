@@ -22,14 +22,16 @@
             </template>
 
             <el-submenu :index="'' + mainGroup.id" 
-             v-for="mainGroup of mainGroups" :key="mainGroup.id"
-             
+             v-for="mainGroup of getGroups" 
+             :key="mainGroup.id"             
              >
              <template slot="title" >{{ mainGroup.title }}</template>
 
-              <el-menu-item :index=" '1-'+subGroup.id"
-              v-for="subGroup of mainGroup['subgroup']" :key="subGroup.id"                  
-                @click="clickMenu(subGroup.id)"
+              <el-menu-item 
+              :index=" '1-'+subGroup.id"
+              v-for="subGroup of mainGroup['subgroup']" 
+              :key="subGroup.id"                  
+                @click="getPic(subGroup.id, 1)"
               >
               {{ subGroup.title }}
               </el-menu-item>              
@@ -48,9 +50,10 @@
         <el-card 
         :body-style="{ padding: '0px' }" 
         class="card"
-        v-for="item of items" :key="item.id"
+        v-for="item of getItems" 
+        :key="item.id"
         >
-          <img :src="'https://127.0.0.1:8000/images/l'+ item.vendor +'.jpg'" class="image">
+          <img :src="'https://whamster.ru/images/l'+ item.vendor +'.jpg'" class="image">
           <div style="padding: 14px;">
             <span>{{ item.item }}</span>
             <div class="bottom clearfix">
@@ -72,40 +75,30 @@ export default {
   data() {
     return {
       currentDate: new Date(),      
-      mainGroups:[],
+      mainGroups:[],        
       items:[],     
     };    
   },
   methods:{
-      //реализация загрузки меню через API
-     getMainGroups(){
-      this.$http.get('https://127.0.0.1:8000/api/main_groups',{headers: {'accept': 'application/json' }})
-      .then(response => {
-        return response.json()
-        })
-        .then(mainGroups => {          
-          this.mainGroups = mainGroups                         
-            });           
-      },
-      clickMenu(id){
-        console.log(id);
+    getPic(id,page){
+      this.$store.dispatch('asyncGetItems',{subGroup:id,page:page})
+    }
+    
+      }, 
+      computed:{
+      getGroups(){
+        return this.$store.getters.computedGroups
       },
       getItems(){
-        this.$http.get('https://127.0.0.1:8000/api/items', {headers: {'accept': 'application/json' }})
-        .then(response =>{
-          return response.json()
-        })
-        .then(items =>{
-          this.items = items
-        });
-      }       
-      },     
- 
-  mounted: function (){  //закачиваем групы и под группы из апи при старте компонента  
-        this.getMainGroups(); 
-        this.getItems();     
-        
-  }
+         return this.$store.getters.computedItems
+      }
+    }, 
+    mounted(){
+      
+        this.$store.dispatch('asyncGetGroups');
+        this.$store.dispatch('asyncGetItems',{});
+      
+    } 
  
 }
 </script>
