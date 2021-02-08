@@ -22,12 +22,16 @@ export default {
                     context.commit('setGroups', mainGroups)
                 });
         },
-        asyncGetItems(context, payload) {
-            payload.page = 1
-            let options = typeof payload.subGroup === 'undefined' ? '?page=' + payload.page : '?subgroup=' + payload.subGroup + '&page=' + payload.page;
+        asyncGetItems(context, { subGroup, page = 1 }) {
+
+            /*if (typeof payload.page === 'undefined') {
+                 payload.page = 1
+             }*/
+            //если подгруппа не установленна то меняем api запрос (отправлем без нее)
+            let options = typeof subGroup === 'undefined' ? '?page=' + page : '?subgroup=' + subGroup + '&page=' + page;
             console.log(options);
 
-            Vue.http.get('https://whamster.ru/api/items' + options, { headers: { 'accept': 'application/json' } })
+            Vue.http.get('https://whamster.ru/api/items.jsonld' + options)
                 .then(response => {
                     return response.json()
                 })

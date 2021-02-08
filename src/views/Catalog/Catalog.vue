@@ -64,6 +64,31 @@
           </div>
         </el-card>
 
+        <!-- кнопки навигации по карточкам товара -->
+        <el-button-group>
+
+          <el-button type="primary" icon="el-icon-d-arrow-left">
+          </el-button>
+
+          <el-button 
+          type="primary" 
+          icon="el-icon-arrow-left"
+          @click="getPic(currentSubGroup, currentPage - 1)"
+          >            
+          </el-button>
+
+          <el-button 
+          type="primary" 
+          icon="el-icon-arrow-right"
+           @click="getPic(currentSubGroup, currentPage + 1)"
+          >            
+          </el-button>
+
+          <el-button type="primary" icon="el-icon-d-arrow-right">
+          </el-button>
+
+        </el-button-group>
+
       </el-col>
     </el-row>
    
@@ -76,11 +101,17 @@ export default {
     return {
       currentDate: new Date(),      
       mainGroups:[],        
-      items:[],     
+      items:[],
+      currentSubGroup:undefined,
+      currentPage:1,     
     };    
   },
   methods:{
     getPic(id,page){
+      this.currentSubGroup = id;
+
+      page > 0 ? this.currentPage = page : '';
+      
       this.$store.dispatch('asyncGetItems',{subGroup:id,page:page})
     }
     
@@ -90,7 +121,8 @@ export default {
         return this.$store.getters.computedGroups
       },
       getItems(){
-         return this.$store.getters.computedItems
+        const hidraItems = this.$store.getters.computedItems ;       
+         return hidraItems["hydra:member"]
       }
     }, 
     mounted(){
