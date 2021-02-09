@@ -2,7 +2,11 @@ import Vue from 'vue'
 export default {
     state: {
         mainGroups: [],
-        items: []
+        items: [],
+        nextPage: '',
+        previousPage: '',
+        lastPage: '',
+        firstPage: ''
     },
     mutations: {
         setGroups(state, payload) {
@@ -10,6 +14,22 @@ export default {
         },
         setItems(state, payload) {
             state.items = payload
+        },
+        //устанавливаем в  state адрес следующей страницы товаров
+        setNextPage(state, payload) {
+            //console.log("payload = " + payload)
+            state.nextPage = payload
+        },
+        //устанавливаем в  state адрес предыдущий страницы товаров
+        setPreviousPage(state, payload) {
+            //console.log("payload = " + payload)
+            state.previousPage = payload
+        },
+        setFirstPage(state, payload) {
+            state.firstPage = payload
+        },
+        setLastPage(state, payload) {
+            state.lastPage = payload
         }
     },
     actions: {
@@ -22,22 +42,24 @@ export default {
                     context.commit('setGroups', mainGroups)
                 });
         },
-        asyncGetItems(context, { subGroup, page = 1 }) {
+        asyncGetItems(context, { apiString = '/api/items.jsonld' }) {
 
-            /*if (typeof payload.page === 'undefined') {
-                 payload.page = 1
-             }*/
-            //если подгруппа не установленна то меняем api запрос (отправлем без нее)
-            let options = typeof subGroup === 'undefined' ? '?page=' + page : '?subgroup=' + subGroup + '&page=' + page;
-            console.log(options);
-
-            Vue.http.get('https://whamster.ru/api/items.jsonld' + options)
+            Vue.http.get('https://whamster.ru' + apiString)
                 .then(response => {
                     return response.json()
                 })
                 .then(items => {
-                    context.commit('setItems', items)
+                    context.commit('setItems', items) //отпраляем данные для установки в лобальный state
+
+                    context.commit('setNextPage', items["hydra:view"]["hydra:next"])
+                    context.commit('setPreviousPage', items["hydra:view"]["hydra:previous"])
+
+                    context.commit('setFirstPage', items["hydra:view"]["hydra:first"])
+                    context.commit('setLastPage', items["hydra:view"]["hydra:last"])
                 });
+
+            console.log('apiString = ' + apiString);
+
         }
     },
     getters: {
@@ -46,6 +68,18 @@ export default {
         },
         computedItems(state) {
             return state.items
+        },
+        getNextPage(state) {
+            return state.nextPage
+        },
+        getPreviousPage(state) {
+            return state.previousPage
+        },
+        getFirstPage(state) {
+            return state.firstPage
+        },
+        getLastPage(state) {
+            return state.lastPage
         }
     }
 }

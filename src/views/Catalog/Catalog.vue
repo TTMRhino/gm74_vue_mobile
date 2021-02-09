@@ -31,7 +31,7 @@
               :index=" '1-'+subGroup.id"
               v-for="subGroup of mainGroup['subgroup']" 
               :key="subGroup.id"                  
-                @click="getPic(subGroup.id, 1)"
+                @click="getPic()"
               >
               {{ subGroup.title }}
               </el-menu-item>              
@@ -67,24 +67,32 @@
         <!-- кнопки навигации по карточкам товара -->
         <el-button-group>
 
-          <el-button type="primary" icon="el-icon-d-arrow-left">
+          <el-button 
+          type="primary" 
+          icon="el-icon-d-arrow-left"
+          @click="getPic(getFirstPage)"
+          >
           </el-button>
 
           <el-button 
           type="primary" 
           icon="el-icon-arrow-left"
-          @click="getPic(currentSubGroup, currentPage - 1)"
+          @click="getPic(getPreviousPage)"
           >            
           </el-button>
 
           <el-button 
           type="primary" 
           icon="el-icon-arrow-right"
-           @click="getPic(currentSubGroup, currentPage + 1)"
+           @click="getPic(getNextPage)"
           >            
           </el-button>
 
-          <el-button type="primary" icon="el-icon-d-arrow-right">
+          <el-button 
+          type="primary" 
+          icon="el-icon-d-arrow-right"
+          @click="getPic(getLastPage)"
+          >
           </el-button>
 
         </el-button-group>
@@ -99,20 +107,15 @@
 export default {
   data() {
     return {
-      currentDate: new Date(),      
-      mainGroups:[],        
-      items:[],
-      currentSubGroup:undefined,
-      currentPage:1,     
+      currentDate: new Date(),
+      currentSubGroup:undefined,         
     };    
   },
   methods:{
-    getPic(id,page){
-      this.currentSubGroup = id;
-
-      page > 0 ? this.currentPage = page : '';
+    getPic(apiString=''){
       
-      this.$store.dispatch('asyncGetItems',{subGroup:id,page:page})
+      console.log("getPic = "+ apiString);
+       this.$store.dispatch('asyncGetItems',{ "apiString":apiString })    
     }
     
       }, 
@@ -120,9 +123,21 @@ export default {
       getGroups(){
         return this.$store.getters.computedGroups
       },
-      getItems(){
-        const hidraItems = this.$store.getters.computedItems ;       
-         return hidraItems["hydra:member"]
+      //получаем items 
+      getItems(){              
+         return  this.$store.getters.computedItems["hydra:member"];
+      },
+      getNextPage(){
+        return this.$store.getters.getNextPage
+      },
+      getPreviousPage(){
+        return this.$store.getters.getPreviousPage
+      },
+      getLastPage(){
+        return this.$store.getters.getLastPage
+      },
+      getFirstPage(){
+        return this.$store.getters.getFirstPage
       }
     }, 
     mounted(){
