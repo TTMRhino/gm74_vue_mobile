@@ -31,7 +31,7 @@
               :index=" '1-'+subGroup.id"
               v-for="subGroup of mainGroup['subgroup']" 
               :key="subGroup.id"                  
-                @click="getPic()"
+                @click="getPic('/api/items.jsonld?page=1','&subgroup='+subGroup.id)"
               >
               {{ subGroup.title }}
               </el-menu-item>              
@@ -70,28 +70,28 @@
           <el-button 
           type="primary" 
           icon="el-icon-d-arrow-left"
-          @click="getPic(getFirstPage)"
+          @click="getPic(getFirstPage,getCurrentGroup)"
           >
           </el-button>
 
           <el-button 
           type="primary" 
           icon="el-icon-arrow-left"
-          @click="getPic(getPreviousPage)"
+          @click="getPic(getPreviousPage,getCurrentGroup)"
           >            
           </el-button>
 
           <el-button 
           type="primary" 
           icon="el-icon-arrow-right"
-           @click="getPic(getNextPage)"
+           @click="getPic(getNextPage,getCurrentGroup)"
           >            
           </el-button>
 
           <el-button 
           type="primary" 
           icon="el-icon-d-arrow-right"
-          @click="getPic(getLastPage)"
+          @click="getPic(getLastPage,getCurrentGroup)"
           >
           </el-button>
 
@@ -107,15 +107,13 @@
 export default {
   data() {
     return {
-      currentDate: new Date(),
-      currentSubGroup:undefined,         
+      currentDate: new Date(),               
     };    
   },
   methods:{
-    getPic(apiString=''){
-      
-      console.log("getPic = "+ apiString);
-       this.$store.dispatch('asyncGetItems',{ "apiString":apiString })    
+    //получаем items делая API запрос к сайту  (получаем новые данные)
+    getPic(apiPage='/api/items.jsonld?page=1',apiGroup=''){    
+       this.$store.dispatch('asyncGetItems',{ "apiPage":apiPage,"apiGroup":apiGroup })    
     }
     
       }, 
@@ -123,7 +121,7 @@ export default {
       getGroups(){
         return this.$store.getters.computedGroups
       },
-      //получаем items 
+      //получаем items из общего хранилища (получаем уже загруженные данные)
       getItems(){              
          return  this.$store.getters.computedItems["hydra:member"];
       },
@@ -138,6 +136,9 @@ export default {
       },
       getFirstPage(){
         return this.$store.getters.getFirstPage
+      },
+      getCurrentGroup(){
+        return this.$store.getters.getCurrentGroup
       }
     }, 
     mounted(){

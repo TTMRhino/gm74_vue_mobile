@@ -6,7 +6,8 @@ export default {
         nextPage: '',
         previousPage: '',
         lastPage: '',
-        firstPage: ''
+        firstPage: '',
+        currentGroup: '' //текущая группа (для перехо по страницам нжна)
     },
     mutations: {
         setGroups(state, payload) {
@@ -30,6 +31,9 @@ export default {
         },
         setLastPage(state, payload) {
             state.lastPage = payload
+        },
+        setCurrentGroup(state, payload) {
+            state.currentGroup = payload
         }
     },
     actions: {
@@ -42,14 +46,18 @@ export default {
                     context.commit('setGroups', mainGroups)
                 });
         },
-        asyncGetItems(context, { apiString = '/api/items.jsonld' }) {
+        asyncGetItems(context, { apiPage = '/api/items.jsonld?page=1', apiGroup = '' }) {
 
-            Vue.http.get('https://whamster.ru' + apiString)
+            console.log('apiString = ' + apiPage + apiGroup);
+
+            Vue.http.get('https://whamster.ru' + apiPage + apiGroup)
                 .then(response => {
                     return response.json()
                 })
                 .then(items => {
                     context.commit('setItems', items) //отпраляем данные для установки в лобальный state
+
+                    context.commit('setCurrentGroup', apiGroup)
 
                     context.commit('setNextPage', items["hydra:view"]["hydra:next"])
                     context.commit('setPreviousPage', items["hydra:view"]["hydra:previous"])
@@ -58,7 +66,7 @@ export default {
                     context.commit('setLastPage', items["hydra:view"]["hydra:last"])
                 });
 
-            console.log('apiString = ' + apiString);
+
 
         }
     },
@@ -80,6 +88,9 @@ export default {
         },
         getLastPage(state) {
             return state.lastPage
+        },
+        getCurrentGroup(state) {
+            return state.currentGroup
         }
     }
 }
