@@ -43,68 +43,29 @@
       </el-col>
     </el-row>
 
-    <!-- Карточки товаров -->
-      <el-row>
-      <el-col  >
+       <!-- кнопки управления страницвми (перелистования) -->
+      <page-control>
+      </page-control>
 
-        <el-card 
-        :body-style="{ padding: '0px' }" 
-        class="card"
-        v-for="item of getItems" 
-        :key="item.id"
-        >
-          <img :src="'https://whamster.ru/images/l'+ item.vendor +'.jpg'" class="image">
-          <div style="padding: 14px;">
-            <span>{{ item.item }}</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ item.description }}</time>
-              <h3>{{item.price}} руб.</h3>
-              <el-button type="text" class="button">Operating</el-button>
-            </div>
-          </div>
-        </el-card>
+        <!-- Карточка товара -->
+        <items-cards>
+        </items-cards>
 
-        <!-- кнопки навигации по карточкам товара -->
-        <el-button-group>
-
-          <el-button 
-          type="primary" 
-          icon="el-icon-d-arrow-left"
-          @click="getPic(getFirstPage,getCurrentGroup)"
-          >
-          </el-button>
-
-          <el-button 
-          type="primary" 
-          icon="el-icon-arrow-left"
-          @click="getPic(getPreviousPage,getCurrentGroup)"
-          >            
-          </el-button>
-
-          <el-button 
-          type="primary" 
-          icon="el-icon-arrow-right"
-           @click="getPic(getNextPage,getCurrentGroup)"
-          >            
-          </el-button>
-
-          <el-button 
-          type="primary" 
-          icon="el-icon-d-arrow-right"
-          @click="getPic(getLastPage,getCurrentGroup)"
-          >
-          </el-button>
-
-        </el-button-group>
-
-      </el-col>
-    </el-row>
+    <!-- кнопки управления страницвми (перелистования) -->
+      <page-control>
+      </page-control>
    
 </div>
 </template>
 
 <script>
+
+import PageControl from "./Components/PageControl";
+import ItemsCards from "./Components/ItemsCards";
+
+
 export default {
+  components: {PageControl,ItemsCards},
   data() {
     return {
       currentDate: new Date(),               
@@ -121,30 +82,11 @@ export default {
       getGroups(){
         return this.$store.getters.computedGroups
       },
-      //получаем items из общего хранилища (получаем уже загруженные данные)
-      getItems(){              
-         return  this.$store.getters.computedItems["hydra:member"];
-      },
-      getNextPage(){
-        return this.$store.getters.getNextPage
-      },
-      getPreviousPage(){
-        return this.$store.getters.getPreviousPage
-      },
-      getLastPage(){
-        return this.$store.getters.getLastPage
-      },
-      getFirstPage(){
-        return this.$store.getters.getFirstPage
-      },
-      getCurrentGroup(){
-        return this.$store.getters.getCurrentGroup
-      }
-    }, 
-    mounted(){
       
-        this.$store.dispatch('asyncGetGroups');
-        this.$store.dispatch('asyncGetItems',{});
+     
+    }, 
+    mounted(){      
+        this.$store.dispatch('asyncGetGroups');      
       
     } 
  
@@ -159,43 +101,7 @@ color:azure;
 .title{
 margin-bottom: 1px;
 text-align: center;
-}
-/*картрочки товара*/
-.time {
-    font-size: 13px;
-    color: #999;
-  }
-  
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    float: right;
-  }
-
-  .image {
-    width: 100%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
-  .card{
-  margin: 5px;
-  }
-   .el-menu{
-    background-color:royalblue;
-  }
+} 
   
   .el-submenu{
    background-color:#af4d14;
