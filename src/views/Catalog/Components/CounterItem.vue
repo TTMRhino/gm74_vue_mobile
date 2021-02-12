@@ -3,7 +3,7 @@
         <el-input-number 
         v-model="num" 
         @change="handleChange" 
-        :min="0" 
+        :min="1" 
         size="large"
         >
         </el-input-number>
@@ -15,14 +15,20 @@ export default {
     name:"CounterItem",
     data() {
     return {
-      num: 0             
+      num: 1             
     };    
   },
   methods: {
-      handleChange(value) {
-        console.log(value)
+      handleChange() {        
+        
+        this.$emit('quantityChange',this.num)
+      },
+
+      getNum(){
+        return this.num
       }
-    }
+    },
+
 }
 </script>
 

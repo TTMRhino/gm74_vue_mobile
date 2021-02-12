@@ -11,9 +11,9 @@
     <router-link to="/cart">
       <div class="cart">
         <i aria-hidden="true" class="el-icon-shopping-cart-1"></i>
-        <span> 0 </span>
+        <span> {{ getCart.totalQuantity }}</span>
         <span> Итого: </span>
-        0
+        {{ getCart.totalPrice }}
       </div>
     </router-link>
   </div> 
@@ -55,7 +55,11 @@
 
 <script>
   export default {
-    
+    computed:{
+      getCart(){
+        return this.$store.getters.getCart
+      }
+    }
   }
 </script>
 

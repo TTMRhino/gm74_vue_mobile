@@ -6,7 +6,7 @@
         <el-card 
         :body-style="{ padding: '0px' }" 
         class="card"
-        v-for="item of getItems" 
+        v-for="(item, index) of getItems" 
         :key="item.id"
         >
           <img :src="'https://whamster.ru/images/l'+ item.vendor +'.jpg'" class="image">
@@ -15,17 +15,24 @@
             <div class="bottom clearfix">
               <time class="time">{{ item.description }}</time>
               <h3>{{item.price}} руб.</h3>
-              <el-button type="text" class="button">Operating</el-button>
+              
             </div>
           </div>
 
 
         <el-row>
-          <counter-item>
+          <counter-item         
+          @quantityChange = "quantity = $event"
+          ref="counterItem"
+          >
           </counter-item>          
         </el-row>
 
-        <el-button type="primary">Заказать</el-button>
+        <el-button 
+        type="primary"
+        @click="addItemToCart(item.vendor, getNum(index))"
+        >Заказать
+        </el-button>
 
         </el-card>
 
@@ -41,12 +48,39 @@ import CounterItem from "./CounterItem";
 
 export default {
     name:"ItemsCards",
+    data() {
+      return {
+        quantity:1
+      }
+    },
     components: {CounterItem},
     methods:{
         //получаем items делая API запрос к сайту  (получаем новые данные)
         getPic(apiPage='/api/items.jsonld?page=1',apiGroup=''){    
         this.$store.dispatch('asyncGetItems',{ "apiPage":apiPage,"apiGroup":apiGroup })    
-        } 
+        },
+        
+        //добовляем товар и колличесво в корзину
+        addItemToCart(vendor,quantity){
+          console.log('Товар в козине = '+ vendor + 'колличесво ='+ quantity);
+          this.$store.dispatch('addGoodsToCart',{ "vendor":vendor,"quantity":quantity })
+        },
+
+        getQuantity(){
+          const temp =this.quantity
+          this.quantity =1
+          console.log("temp = "+temp)        
+         
+          return temp
+        },
+        
+
+        //идем в дочерний элемент(счетчик) и забираем data-колличесво  из самого компонента.
+        //Index так как $refs.counterItem возвращает массив из 9 элементов.Нужно попасть в правельный
+        getNum(index){ 
+          console.log(this.$refs.counterItem[index].getNum())         
+          return this.$refs.counterItem[index].getNum()
+        }
     },
      computed:{
          //получаем items из общего хранилища (получаем уже загруженные данные)
