@@ -19,7 +19,7 @@
             </div>
           </div>
 
-
+        <!-- счетчик товара (колличесво к заказу) -->
         <el-row>
           <counter-item         
           @quantityChange = "quantity = $event"
@@ -28,9 +28,10 @@
           </counter-item>          
         </el-row>
 
+        <!-- Кнопка заказать -->
         <el-button 
         type="primary"
-        @click="addItemToCart(item.vendor, getNum(index))"
+        @click="addItemToCart(item.vendor, getNum(index), item.price, item.item)"
         >Заказать
         </el-button>
 
@@ -61,15 +62,19 @@ export default {
         },
         
         //добовляем товар и колличесво в корзину
-        addItemToCart(vendor,quantity){
-          console.log('Товар в козине = '+ vendor + 'колличесво ='+ quantity);
-          this.$store.dispatch('addGoodsToCart',{ "vendor":vendor,"quantity":quantity })
+        addItemToCart(vendor,quantity,price, item){
+          //console.log('Товар в козине = '+ vendor + 'колличесво ='+ quantity + 'цена = '+price);
+          this.$store.dispatch('addGoodsToCart',
+          { "vendor":vendor,
+          "quantity":quantity, 
+          "price":price,
+          "item":item ,
+          })
         },
 
         getQuantity(){
           const temp =this.quantity
-          this.quantity =1
-          console.log("temp = "+temp)        
+          this.quantity =1                
          
           return temp
         },
@@ -77,8 +82,7 @@ export default {
 
         //идем в дочерний элемент(счетчик) и забираем data-колличесво  из самого компонента.
         //Index так как $refs.counterItem возвращает массив из 9 элементов.Нужно попасть в правельный
-        getNum(index){ 
-          console.log(this.$refs.counterItem[index].getNum())         
+        getNum(index){                   
           return this.$refs.counterItem[index].getNum()
         }
     },

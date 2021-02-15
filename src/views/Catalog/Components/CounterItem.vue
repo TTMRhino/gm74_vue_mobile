@@ -20,7 +20,7 @@ export default {
   },
   methods: {
       handleChange() {        
-        
+        //при изменении колличесво передаем его в родительский компонент
         this.$emit('quantityChange',this.num)
       },
 

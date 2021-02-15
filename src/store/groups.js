@@ -38,7 +38,7 @@ export default {
     },
     actions: {
         asyncGetGroups(context) {
-            Vue.http.get('https://whamster.ru/api/main_groups', { headers: { 'accept': 'application/json' } })
+            Vue.http.get('http://127.0.0.1:8000/api/main_groups', { headers: { 'accept': 'application/json' } })
                 .then(response => {
                     return response.json()
                 })
@@ -50,7 +50,7 @@ export default {
 
             console.log('apiString = ' + apiPage + apiGroup);
 
-            Vue.http.get('https://whamster.ru' + apiPage + apiGroup)
+            Vue.http.get('http://127.0.0.1:8000' + apiPage + apiGroup)
                 .then(response => {
                     return response.json()
                 })

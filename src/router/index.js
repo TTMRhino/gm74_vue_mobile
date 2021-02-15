@@ -5,7 +5,7 @@ import Catalog from '../views/Catalog/Catalog.vue'
 import About from '../views/About.vue'
 import Delivery from '../views/Delivery.vue'
 import Contacts from '../views/Contacts.vue'
-import Cart from '../views/Cart.vue'
+import Cart from '../views/Cart/Cart.vue'
 
 require('../assets/css/main.css')
 
