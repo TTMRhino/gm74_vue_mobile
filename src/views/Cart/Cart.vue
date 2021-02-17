@@ -8,13 +8,36 @@
 </div>
 
 <!-- Полная корзина -->
-  <div v-else>
-    
+<div v-else>
+  <div class="cart-pad" >
+
+    <!-- Шапка  -->
+    <el-row class="head-table">
+
+    <el-col :span="12">
+      Наименование
+    </el-col>
+
+    <el-col :span="4">
+      цена
+    </el-col>
+
+    <el-col :span="4">
+      колл.
+    </el-col>
+
+    <el-col :span="4">
+      сумма
+    </el-col>
+
+    </el-row>
+
+ <!-- Тело   -->
     <el-row 
     v-for="item of getCart.items"
     :key="item.vendor"
     >
-      <el-col :span="8">
+      <el-col :span="12">
         <div class="grid-content bg-purple">
         <img 
         :src="'http://127.0.0.1:8000/images/l'+  item.vendor + '.jpg'" 
@@ -24,24 +47,48 @@
           {{ item.item }}
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="4">
         <div class="grid-content bg-purple-light">
-          {{ item.price }}
+          {{ item.price }} 
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="4">
         <div class="grid-content bg-purple">
+        {{ item.quantity }} шт.
+        </div>
+      </el-col>
+      <el-col :span="4">
+        <div class="grid-content bg-purple">
+        {{ item.quantity * item.quantity }} 
         </div>
       </el-col>
     </el-row>
-  </div>
 
+     <!-- Подвал  -->
+  <el-row class="head-table">
+  <el-col :span="24">
+    Итого: <span class="total">{{ getCart.totalPrice }} </span>руб.
+  </el-col>
+  </el-row>
+</div>
+  <h2>Доставка и оплата</h2>
+
+
+  <order-form>
+  </order-form>
+   
+  
+
+  
+</div>
+  
   </div>
 </template>
 
 <script>
-
+import OrderForm from "./Components/OrderForm";
 export default {
+  components: {OrderForm},
   methods:{
         getCartLength(){                
           return this.$store.getters.getCart.items.length
@@ -73,30 +120,50 @@ padding-left: 7px;
 padding-right: 7px;
 }
 /* Layout */
+.cart-pad{
+  background-color: white;
+  color:darkslategray;
+  font-size: 0.9em;
+  text-align: center;
+}
+.head-table{
+  font-size: 1em;
+  font-weight: bold;
+}
 .el-row {
-    margin-bottom: 20px;
+  border-bottom : 1px solid rgb(209, 209, 209); /* Параметры границы */
+    margin-bottom: 10px;
+      
     &:last-child {
       margin-bottom: 0;
     }
+   
   }
-  .el-col {
-    border-radius: 4px;
-  }
+ 
   .bg-purple-dark {
-    background: #99a9bf;
+    
   }
   .bg-purple {
-    background: #d3dce6;
+    
   }
   .bg-purple-light {
-    background: #e5e9f2;
+    
   }
   .grid-content {
-    border-radius: 4px;
+    margin-bottom: 10px;
     min-height: 36px;
   }
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+  }
+  .total{
+    font-style: italic;
+    color: orangered;
+  }
+
+  .el-button{
+    width: 100%;
+    height: 70px;
   }
 </style>
