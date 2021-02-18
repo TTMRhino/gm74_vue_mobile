@@ -34,10 +34,20 @@
 
  <!-- Тело   -->
     <el-row 
-    v-for="item of getCart.items"
+    v-for="(item, index) of getCart.items"
     :key="item.vendor"
     >
-      <el-col :span="12">
+    <el-col :span="3">    
+      <el-button 
+      type="default" 
+      icon="el-icon-delete" 
+      circle 
+      size="mini"
+      @click="deleteItem(index)">
+      </el-button>
+    </el-col>
+
+      <el-col :span="9">
         <div class="grid-content bg-purple">
         <img 
         :src="'http://127.0.0.1:8000/images/l'+  item.vendor + '.jpg'" 
@@ -47,17 +57,34 @@
           {{ item.item }}
         </div>
       </el-col>
-      <el-col :span="4">
+
+      <el-col :span="2">
         <div class="grid-content bg-purple-light">
           {{ item.price }} 
         </div>
       </el-col>
-      <el-col :span="4">
-        <div class="grid-content bg-purple">
+
+      <el-col :span="7">
+      <el-button 
+      type="default" 
+      class="countButton" 
+      style="line-height:0;"
+      @click="counter(1)"
+      >+</el-button>
+
+        <div class="grid-content bg-purple">        
         {{ item.quantity }} шт.
         </div>
+        <el-button 
+        type="default" 
+        class="countButton" 
+        style="line-height:0;"
+        @click="counter(-1)"
+        >-</el-button>
+        
       </el-col>
-      <el-col :span="4">
+
+      <el-col :span="3">
         <div class="grid-content bg-purple">
         {{ item.quantity * item.quantity }} 
         </div>
@@ -92,7 +119,13 @@ export default {
   methods:{
         getCartLength(){                
           return this.$store.getters.getCart.items.length
-        }  
+        }, 
+        counter(num) {
+          console.log("Counter = "+ num);
+        },
+        deleteItem(index){
+          console.log("Удалили = "+index)
+        }
   },
   computed:{
     getCart(){
@@ -152,6 +185,9 @@ padding-right: 7px;
   .grid-content {
     margin-bottom: 10px;
     min-height: 36px;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
   }
   .row-bg {
     padding: 10px 0;
@@ -165,5 +201,9 @@ padding-right: 7px;
   .el-button{
     width: 100%;
     height: 70px;
+  }
+  .countButton{
+    width: 20px;
+    height: 20px;  
   }
 </style>

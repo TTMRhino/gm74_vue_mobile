@@ -1,4 +1,5 @@
 //import Vue from 'vue'
+import VueCookie from 'vue-cookie'
 export default {
     state: {
         cart: {
@@ -13,7 +14,7 @@ export default {
             let index = state.cart.items.findIndex(item => item.vendor == vendor);
 
             if (index >= 0) {
-                console.log(index)
+                //console.log(index)
                 state.cart.items[index].quantity += quantity;
             } else {
                 state.cart.items.push({
@@ -30,7 +31,11 @@ export default {
 
             state.cart.totalPrice += quantity * price
 
-            console.log(state.cart);
+            //console.log(state.cart);
+            //удаляем куку перед ее заполнением
+            VueCookie.delete('mcart');
+            //добавляем все в куку            
+            VueCookie.set('mcart', JSON.stringify(state.cart), 1);
         }
     },
     actions: {

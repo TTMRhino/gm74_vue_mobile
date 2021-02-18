@@ -66,9 +66,9 @@ export default {
           //console.log('Товар в козине = '+ vendor + 'колличесво ='+ quantity + 'цена = '+price);
           this.$store.dispatch('addGoodsToCart',
           { "vendor":vendor,
-          "quantity":quantity, 
-          "price":price,
-          "item":item ,
+            "quantity":quantity, 
+            "price":price,
+            "item":item ,
           })
         },
 

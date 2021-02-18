@@ -13,7 +13,7 @@
         <i aria-hidden="true" class="el-icon-shopping-cart-1"></i>
         <span> {{ getCart.totalQuantity }}</span>
         <span> Итого: </span>
-        {{ getCart.totalPrice }}
+        {{ getCart.totalPrice }}       
       </div>
     </router-link>
   </div> 
@@ -54,12 +54,36 @@
 </template>
 
 <script>
-  export default {
+
+
+  export default {    
     computed:{
       getCart(){
         return this.$store.getters.getCart
       }
-    }
+    },
+    created:function(){
+     
+     //Проверяем запись корзины в куках перед созаднием приложения
+      let cookiCart =   this.$cookie.get('mcart'); //берем куку   
+
+      if (typeof cookiCart === "undefined" || cookiCart==null){
+        console.log('Куки нет!');
+      }else{
+        cookiCart = JSON.parse(cookiCart);
+        console.log('Кука Есть!');
+        //добавляем куку в  store(глобальное хранилище vue) 
+        cookiCart.items.forEach(item => { 
+           this.$store.dispatch('addGoodsToCart',{
+             "vendor":item.vendor,
+             "quantity":item.quantity, 
+             "price":item.price,
+            "item":item.item ,
+           });
+        });       
+      }
+    
+  },
   }
 </script>
 
