@@ -31,7 +31,7 @@
         <!-- Кнопка заказать -->
         <el-button 
         type="primary"
-        @click="addItemToCart(item.vendor, getNum(index), item.price, item.item)"
+        @click="addItemToCart(item.vendor, getNum(index), item.price, item.item, item.id)"
         >Заказать
         </el-button>
 
@@ -62,13 +62,14 @@ export default {
         },
         
         //добовляем товар и колличесво в корзину
-        addItemToCart(vendor,quantity,price, item){
+        addItemToCart(vendor,quantity,price, item,id){
           //console.log('Товар в козине = '+ vendor + 'колличесво ='+ quantity + 'цена = '+price);
           this.$store.dispatch('addGoodsToCart',
           { "vendor":vendor,
             "quantity":quantity, 
             "price":price,
             "item":item ,
+            "id":id,
           })
         },
 

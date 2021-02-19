@@ -43,7 +43,7 @@
       icon="el-icon-delete" 
       circle 
       size="mini"
-      @click="deleteItem(index)">
+      @click="deleteItem(index, item.quantity, item.price)">
       </el-button>
     </el-col>
 
@@ -69,7 +69,7 @@
       type="default" 
       class="countButton" 
       style="line-height:0;"
-      @click="counter(1)"
+      @click="counter(item.vendor, 1, item.price, item.item, item.id)"
       >+</el-button>
 
         <div class="grid-content bg-purple">        
@@ -79,14 +79,14 @@
         type="default" 
         class="countButton" 
         style="line-height:0;"
-        @click="counter(-1)"
+        @click="counter(item.vendor, -1, item.price, item.item, item.id)"
         >-</el-button>
         
       </el-col>
 
       <el-col :span="3">
         <div class="grid-content bg-purple">
-        {{ item.quantity * item.quantity }} 
+        {{ item.price * item.quantity }} 
         </div>
       </el-col>
     </el-row>
@@ -119,13 +119,22 @@ export default {
   methods:{
         getCartLength(){                
           return this.$store.getters.getCart.items.length
-        }, 
-        counter(num) {
-          console.log("Counter = "+ num);
         },
-        deleteItem(index){
-          console.log("Удалили = "+index)
-        }
+        //изменение колличества товара в корзине (колличесво посылаем либо 1 или -1)
+        counter(vendor, quantity, price, item,id) {         
+           this.$store.dispatch('addGoodsToCart',{
+             'vendor':vendor,
+             'quantity':quantity,
+             'price':price,
+             'item':item,
+             'id':id
+             });
+        },
+        //удаление товара из корзины
+        deleteItem(index,quantity,price){
+          this.$store.dispatch('deleteGoodsToCart',{'index':index,'quantity':quantity,'price':price});         
+        },
+
   },
   computed:{
     getCart(){

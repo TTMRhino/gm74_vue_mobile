@@ -9,39 +9,51 @@ export default {
         }
     },
     mutations: {
-        setGoods(state, { vendor, quantity, price, item }) {
 
+        //добовление товара в Store (при выборе из каталога)
+        setGoods(state, { vendor, quantity, price, item, id }) {
             let index = state.cart.items.findIndex(item => item.vendor == vendor);
 
             if (index >= 0) {
-                //console.log(index)
                 state.cart.items[index].quantity += quantity;
             } else {
                 state.cart.items.push({
                     'vendor': vendor,
                     'quantity': quantity,
                     'price': price,
-                    'item': item
+                    'item': item,
+                    'id': id
                 })
             }
-
-
             //общее колличесво товара
             state.cart.totalQuantity += quantity
 
             state.cart.totalPrice += quantity * price
 
-            //console.log(state.cart);
             //удаляем куку перед ее заполнением
             VueCookie.delete('mcart');
             //добавляем все в куку            
             VueCookie.set('mcart', JSON.stringify(state.cart), 1);
-        }
+        },
+        deleteGoods(state, { index, quantity, price }) {
+            state.cart.items.splice(index, 1); //удаляем товар из store 
+            state.cart.totalQuantity -= quantity;
+            state.cart.totalPrice -= quantity * price;
+
+            //удаляем куку перед ее заполнением
+            VueCookie.delete('mcart');
+            //добавляем все в куку            
+            VueCookie.set('mcart', JSON.stringify(state.cart), 1);
+        },
     },
     actions: {
         addGoodsToCart(context, goods) {
             context.commit('setGoods', goods)
+        },
+        deleteGoodsToCart(context, goods) {
+            context.commit('deleteGoods', goods)
         }
+
     },
     getters: {
         getCart(state) {

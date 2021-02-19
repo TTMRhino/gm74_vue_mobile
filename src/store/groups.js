@@ -48,7 +48,7 @@ export default {
         },
         asyncGetItems(context, { apiPage = '/api/items.jsonld?page=1', apiGroup = '' }) {
 
-            console.log('apiString = ' + apiPage + apiGroup);
+            //console.log('apiString = ' + apiPage + apiGroup);
 
             Vue.http.get('http://127.0.0.1:8000' + apiPage + apiGroup)
                 .then(response => {

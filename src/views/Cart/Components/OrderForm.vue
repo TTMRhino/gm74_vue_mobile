@@ -16,13 +16,21 @@
         </el-form-item>
 
         <!-- Телефон -->
-        <el-form-item label="Телефон" prop="phone">
-            <el-input v-model="ruleForm.phone"></el-input>
+        <el-form-item 
+        label="Телефон"               
+        >
+            <el-input 
+            v-model="ruleForm.phone"            
+            ></el-input>
         </el-form-item>
 
         <!-- Индекс -->
-        <el-form-item label="Индекс" prop="mailIndex">
-            <el-input v-model="ruleForm.mailIndex"></el-input>
+        <el-form-item 
+        label="Индекс"         
+        >
+            <el-input 
+            v-model="ruleForm.mailIndex"
+            ></el-input>
         </el-form-item>
 
         <!-- Город -->
@@ -56,6 +64,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
 export default {
     name:"OrderForm",
     data() {
@@ -74,12 +84,11 @@ export default {
             { min: 3, max: 40, message: 'Динна должна быть от 3 до 40!', trigger: 'blur' }
           ],
           phone:[
-              { type: 'number',required: true, message: 'Введите телефон', trigger: 'blur' },
-              { min: 3, max: 18, message: 'Динна должна быть от 3 до 18!', trigger: 'blur' }
+              { required: true, message: 'Введите телефон', trigger: 'blur' },
+              { min: 3, max: 20, message: 'Динна должна быть от 3 до 20!', trigger: 'blur' }             
           ],
-      mailIndex:[
-              { type: 'number',  trigger: 'blur' },
-              {  max: 20, message: 'Динна должна быть от 3 до 20!', trigger: 'blur' }
+      mailIndex:[              
+              { min: 0, max: 20, message: 'Динна должна быть до 20!', trigger: 'blur' }                            
       ],
       city:[
           { required: true,  trigger: 'blur' }
@@ -90,7 +99,7 @@ export default {
       ],
       coment:[
             { trigger: 'blur' },
-            {  max: 40, message: 'Коментарий дожен быть до 150 символов!', trigger: 'blur' }
+            {  max: 190, message: 'Коментарий дожен быть до 150 символов!', trigger: 'blur' }
       ]
        }
     }
@@ -99,7 +108,32 @@ export default {
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+           
+            this.$http.post('http://127.0.0.1:8000/api/customers',  {              
+
+                name:this.ruleForm.name,
+                phone:this.ruleForm.phone,
+                mailindex:this.ruleForm.mailIndex,
+                city:this.ruleForm.city,
+                comments:this.ruleForm.coment,
+                data:new Date(),
+                status:"New",
+                adress:this.ruleForm.adress
+                }, {headers: { 'accept': 'application/json' }}).then(response => {
+                    
+
+                const items = this.$store.getters.getCart.items;
+                console.log(items)
+                        items.forEach(function(item){                           
+                            Vue.http.post('http://127.0.0.1:8000/api/orders',{
+                            item:"/api/items/" + item.id,
+                            quantity:item.quantity,
+                            customers:"/api/customers/"+ response.body.id
+                        })
+                    })
+                    
+                })
+
           } else {
             console.log('error submit!!');
             return false;
