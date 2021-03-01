@@ -1,13 +1,17 @@
 <template>
     <!-- Карточки товаров -->
       <el-row>
-      <el-col  >
+      <el-col>
 
         <el-card 
         :body-style="{ padding: '0px' }" 
         class="card"
         v-for="(item, index) of getItems" 
         :key="item.id"
+
+         v-loading="loading"
+         element-loading-text="Loading..."
+         element-loading-spinner="el-icon-loading"
         >
           <img :src="'https://whamster.ru/images/l'+ item.vendor +'.jpg'" class="image">
           <div style="padding: 14px;">
@@ -51,7 +55,8 @@ export default {
     name:"ItemsCards",
     data() {
       return {
-        quantity:1
+        quantity:1,
+        loading: false,
       }
     },
     components: {CounterItem},
@@ -95,7 +100,10 @@ export default {
     },
     mounted(){
         this.$store.dispatch('asyncGetItems',{});
-    }
+    },
+    updated() {
+      this.loading = this.$store.getters.getStatusLoading;
+    },
 }
 </script>
 <style scoped>

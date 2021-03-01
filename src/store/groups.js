@@ -7,14 +7,16 @@ export default {
         previousPage: '',
         lastPage: '',
         firstPage: '',
-        currentGroup: '' //текущая группа (для перехо по страницам нжна)
+        currentGroup: '', //текущая группа (для перехо по страницам нжна)
+        itemsLoad: true,
     },
+
     mutations: {
         setGroups(state, payload) {
             state.mainGroups = payload
         },
         setItems(state, payload) {
-            state.items = payload
+            state.items = payload;
         },
         //устанавливаем в  state адрес следующей страницы товаров
         setNextPage(state, payload) {
@@ -34,6 +36,9 @@ export default {
         },
         setCurrentGroup(state, payload) {
             state.currentGroup = payload
+        },
+        setItemsLoad(state, payload) {
+            state.itemsLoad = payload
         }
     },
     actions: {
@@ -48,7 +53,8 @@ export default {
         },
         asyncGetItems(context, { apiPage = '/api/items.jsonld?page=1', apiGroup = '' }) {
 
-            //console.log('apiString = ' + apiPage + apiGroup);
+            context.commit('setItemsLoad', true)
+                //console.log('apiString = ' + apiPage + apiGroup);
 
             Vue.http.get('http://127.0.0.1:8000' + apiPage + apiGroup)
                 .then(response => {
@@ -64,7 +70,7 @@ export default {
 
                     context.commit('setFirstPage', items["hydra:view"]["hydra:first"])
                     context.commit('setLastPage', items["hydra:view"]["hydra:last"])
-                });
+                }).then(() => context.commit('setItemsLoad', false));
 
 
 
@@ -91,6 +97,9 @@ export default {
         },
         getCurrentGroup(state) {
             return state.currentGroup
+        },
+        getStatusLoading(state) {
+            return state.itemsLoad
         }
     }
 }

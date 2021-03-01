@@ -45,6 +45,12 @@ export default {
             //добавляем все в куку            
             VueCookie.set('mcart', JSON.stringify(state.cart), 1);
         },
+        //отчищаем корзину
+        clearCart(state) {
+            state.cart.items = [];
+            state.cart.totalQuantity = 0;
+            state.cart.totalPrice = 0;
+        },
     },
     actions: {
         addGoodsToCart(context, goods) {
@@ -52,6 +58,9 @@ export default {
         },
         deleteGoodsToCart(context, goods) {
             context.commit('deleteGoods', goods)
+        },
+        clearCart(context) {
+            context.commit('clearCart')
         }
 
     },

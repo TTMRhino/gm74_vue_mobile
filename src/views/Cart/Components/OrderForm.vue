@@ -1,127 +1,131 @@
 <template>
 <div class="cart-pad" >
-
-    <el-form 
-    :model="ruleForm" 
-    :rules="rules" 
-    ref="ruleForm" 
-    label-width="120px" 
-    class="demo-ruleForm"
-    label-position="top"
-    >
-
-        <!-- ФИО -->
-        <el-form-item label="ФИО" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
+    <form @submit.prevent="onSubmit">
+         <!-- ФИО -->
+        
+        <div class="form-group" :class="{ 'form-group--error': $v.name.$error }">
+            <label class="form__label">ФИО</label>
+            <input class="form__input" v-model.trim.lazy="$v.name.$model"/>
+        </div>
+        <div class="error" v-if="(!$v.name.required) &&  ($v.name.dirty)">Field is required</div>
+        <div class="error" v-if="!$v.name.minLength">Динна ФИО должна быть больше {{$v.name.$params.minLength.min}} символов.</div>
+        <div class="error" v-if="!$v.name.maxLength">Динна ФИО должна быть меньше {{$v.name.$params.maxLength.max}} символов.</div>
 
         <!-- Телефон -->
-        <el-form-item 
-        label="Телефон"               
-        >
-            <el-input 
-            v-model="ruleForm.phone"            
-            ></el-input>
-        </el-form-item>
+        <div class="form-group" :class="{ 'form-group--error': $v.phone.$error }">
+            <label class="form__label">Телефон</label>
+            <input class="form__input" v-model.trim.lazy="$v.phone.$model"/>
+        </div>
+        <div class="error" v-if="(!$v.phone.required) &&  ($v.phone.dirty)">Field is required</div>
+        <div class="error" v-if="!$v.phone.minLength">Динна телефона должна быть больше {{$v.phone.$params.minLength.min}} цифр.</div>
+        <div class="error" v-if="!$v.phone.numeric">Не корректный телефон.</div>
+               
+       <!-- Индекс-->
+        <div class="form-group" :class="{ 'form-group--error': $v.mailindex.$error }">
+            <label class="form__label">Индекс</label>
+            <input class="form__input" v-model.trim.lazy="$v.mailindex.$model"/>
+        </div>      
+        <div class="error" v-if="!$v.mailindex.maxLength">Динна индекса не должна превышать {{$v.mailindex.$params.maxLength.max}} символов.</div>
 
-        <!-- Индекс -->
-        <el-form-item 
-        label="Индекс"         
-        >
-            <el-input 
-            v-model="ruleForm.mailIndex"
-            ></el-input>
-        </el-form-item>
+       
+      <!-- Город -->
+      <div class="form-group" :class="{ 'form-group--error': $v.city.$error }">
+        <label class="form__label">Город</label>
 
-        <!-- Город -->
+        <select class="form__input" v-model.trim.lazy="$v.city.$model" required>
+                <option selected value="Челябинск" >Челябинск</option>
+                <option value="Другой город">Другой город</option>
+        </select>       
+      </div>
+      
+      <!-- Адрес-->
+        <div class="form-group" :class="{ 'form-group--error': $v.adress.$error }">
+            <label class="form__label">Адрес</label>
+            <input class="form__input" v-model.trim.lazy="$v.adress.$model"/>
+        </div>
+        <div class="error" v-if="!$v.adress.minLength">Динна  должна быть больше {{$v.adress.$params.minLength.min}} символов.</div>      
+        <div class="error" v-if="!$v.adress.maxLength">Динна не должна превышать {{$v.adress.$params.maxLength.max}} символов.</div>
 
-        <el-form-item label="Город" prop="region">
-        <el-select v-model="ruleForm.city" placeholder="Город">
-        <el-option label="Челябинск" value="Челябинск"></el-option>
-        <el-option label="Другой город" value="Другой город"></el-option>
-        </el-select>
-    </el-form-item>
+    <!-- Коментарии -->
+        <div class="form-group" :class="{ 'form-group--error': $v.comments.$error }">
+            <label class="form__label">Коментарий</label>
+            <textarea class="form__input" v-model.trim.lazy="$v.comments.$model">
+            </textarea>
+        </div>              
+        <div class="error" v-if="!$v.comments.maxLength">Динна не должна превышать {{$v.comments.$params.maxLength.max}} символов.</div>
 
-    <!-- Адрес -->
-        <el-form-item label="Адрес" prop="adress">
-            <el-input v-model="ruleForm.adress"></el-input>
-        </el-form-item>
+    <!-- SUBMIT-->
+    <button class="submit" type="submit" :disabled="submitStatus === 'PENDING'">Оформить</button>
+    <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
 
-        <!-- Коментарий  -->
-        <el-form-item label="Коментарий" prop="coment" >
-            <el-input type="textarea" class="areaText"  v-model="ruleForm.coment"></el-input>
-        </el-form-item>
-
-
-        <el-form-item size="large">
-            <el-button type="warning" @click="onSubmit('ruleForm')">Офрмить заказ</el-button>           
-        </el-form-item>
-
-
-
-    </el-form>
+  </form>
 </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import VueCookie from 'vue-cookie'
+import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators';
 
 export default {
-    name:"OrderForm",
+    
     data() {
     return {
-      ruleForm: {
-          name: '',
-          phone:'',
-          mailIndex:'',
-          city:'',
-          adress:'',
-          coment:'',
-      },
-       rules: {
-          name: [
-            { required: true, message: 'Ввдите ФИО', trigger: 'blur' },
-            { min: 3, max: 40, message: 'Динна должна быть от 3 до 40!', trigger: 'blur' }
-          ],
-          phone:[
-              { required: true, message: 'Введите телефон', trigger: 'blur' },
-              { min: 3, max: 20, message: 'Динна должна быть от 3 до 20!', trigger: 'blur' }             
-          ],
-      mailIndex:[              
-              { min: 0, max: 20, message: 'Динна должна быть до 20!', trigger: 'blur' }                            
-      ],
-      city:[
-          { required: true,  trigger: 'blur' }
-      ],
-      adress:[
-            { required: true, message: 'Ввдите Адрес', trigger: 'blur' },
-            { min: 5, max: 40, message: 'Динна должна быть от 5 до 40!', trigger: 'blur' }
-      ],
-      coment:[
-            { trigger: 'blur' },
-            {  max: 190, message: 'Коментарий дожен быть до 150 символов!', trigger: 'blur' }
-      ]
-       }
+         name: '', 
+         phone:'',
+         mailindex:'',
+         city:'',
+         adress:'',
+         comments:'',
+         submitStatus: null,     
     }
   },
+   validations:{
+          name:{
+              required,
+              minLength:minLength(3),
+              maxLength:maxLength(45),
+          },
+          phone:{
+              required,
+              minLength:minLength(4),              
+              numeric,
+          },
+           mailindex:{                              
+               maxLength:maxLength(20),
+           },
+           city:{},
+           adress:{
+               required,
+               minLength:minLength(5),
+               maxLength:maxLength(30),
+           },
+           comments:{
+               maxLength:maxLength(200),
+           },
+      },
   methods: {
-      onSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
+     
+
+      onSubmit() {
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+            this.submitStatus = 'ERROR'
+        } else {
            
             this.$http.post('http://127.0.0.1:8000/api/customers',  {              
 
-                name:this.ruleForm.name,
-                phone:this.ruleForm.phone,
-                mailindex:this.ruleForm.mailIndex,
-                city:this.ruleForm.city,
-                comments:this.ruleForm.coment,
+                name:this.name,
+                phone:this.phone,
+                mailindex:this.mailindex,
+                city:this.city,
+                comments:this.comments,
                 data:new Date(),
                 status:"New",
-                adress:this.ruleForm.adress
+                adress:this.adress
                 }, {headers: { 'accept': 'application/json' }}).then(response => {
                     
-
+                    
                 const items = this.$store.getters.getCart.items;
                 console.log(items)
                         items.forEach(function(item){                           
@@ -132,14 +136,15 @@ export default {
                         })
                     })
                     
-                })
-
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
+                }).then(() => {
+                    //после отправки информации на сервер удаляем куки
+                    VueCookie.delete('mcart');
+                    this.$store.dispatch('clearCart');
+                    this.$router.push('/successful');
+                }
+                )       
+        }
+      }
     }
 }
 </script>
@@ -167,5 +172,42 @@ export default {
 }
 .label{
     margin-bottom: 0px;
+}
+.form-group--error{
+    position: relative;    
+    color:crimson;
+    margin:0;
+    padding: 0;
+}
+
+/*input html*/
+label{
+display: block;
+margin-bottom: 0px;
+}
+.form__input{
+width: 100%;
+padding:10px 1px 10px 1px;
+border-radius: 4%;
+}
+.error{
+color:crimson;
+}
+.cart-pad{
+padding: 20px 0 30px 0;
+}
+select{
+width:100% ;
+padding:10px 1px 10px 1px;
+}
+textarea{
+height: 100px;
+}
+.submit{
+background-color: #e6a23c;
+width: 100%;
+padding:15px 1px 15px 1px;
+font-size: large;
+
 }
 </style>

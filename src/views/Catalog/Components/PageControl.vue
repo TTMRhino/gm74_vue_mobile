@@ -1,4 +1,5 @@
 <template>
+<div class="control">
      <!-- кнопки навигации по карточкам товара -->
         <el-button-group>
 
@@ -31,6 +32,7 @@
           </el-button>
 
         </el-button-group>
+</div>
 </template>
 
 <script>
@@ -71,4 +73,11 @@ export default {
   .el-button--primary{
     width: 80px;   
   }
+  .control{
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  }
+
 </style>

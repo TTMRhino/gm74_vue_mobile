@@ -6,6 +6,7 @@ import About from '../views/About.vue'
 import Delivery from '../views/Delivery.vue'
 import Contacts from '../views/Contacts.vue'
 import Cart from '../views/Cart/Cart.vue'
+import Successful from '../views/Successful.vue'
 
 require('../assets/css/main.css')
 
@@ -40,6 +41,11 @@ const routes = [{
         path: '/cart',
         name: 'Cart',
         component: Cart
+    },
+    {
+        path: '/successful',
+        name: 'Successful',
+        component: Successful
     }
 ]
 
