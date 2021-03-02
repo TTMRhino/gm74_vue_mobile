@@ -7,11 +7,7 @@
         :body-style="{ padding: '0px' }" 
         class="card"
         v-for="(item, index) of getItems" 
-        :key="item.id"
-
-         v-loading="loading"
-         element-loading-text="Loading..."
-         element-loading-spinner="el-icon-loading"
+        :key="item.id"         
         >
           <img :src="'https://whamster.ru/images/l'+ item.vendor +'.jpg'" class="image">
           <div style="padding: 14px;">
@@ -56,7 +52,7 @@ export default {
     data() {
       return {
         quantity:1,
-        loading: false,
+        
       }
     },
     components: {CounterItem},
@@ -101,9 +97,7 @@ export default {
     mounted(){
         this.$store.dispatch('asyncGetItems',{});
     },
-    updated() {
-      this.loading = this.$store.getters.getStatusLoading;
-    },
+    
 }
 </script>
 <style scoped>
@@ -111,6 +105,7 @@ export default {
 .time {
     font-size: 13px;
     color: #999;
+     
   }
   
   .bottom {

@@ -48,7 +48,10 @@
       </page-control>
 
         <!-- Карточка товара -->
-        <items-cards >
+        <items-cards 
+         v-loading.fullscreen.lock="fullscreenLoading"
+        
+        >
         </items-cards>
 
     <!-- кнопки управления страницвми (перелистования) -->
@@ -75,7 +78,10 @@ export default {
   components: {PageControl,ItemsCards},
   data() {
     return {
-      currentDate: new Date(),               
+      currentDate: new Date(),
+     
+      fullscreenLoading:false ,
+                     
     };    
   },
   methods:{
@@ -92,10 +98,30 @@ export default {
       
      
     }, 
-    mounted(){      
-        this.$store.dispatch('asyncGetGroups');      
+    mounted(){ 
+      const loading = this.$loading({
+          lock: true,
+          text: 'Загрузка',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)',
+          
+        });
+      this.$store.getters.getStatusLoading ?   '' : loading.close() ;
+
+        this.$store.dispatch('asyncGetGroups'); 
+            
       
-    } 
+    },
+    updated() {
+      const loading = this.$loading({
+          lock: true,
+          text: 'Загрузка',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)',
+          
+        });
+      this.$store.getters.getStatusLoading ?   '' : loading.close() ;
+    }, 
  
 }
 
@@ -140,7 +166,7 @@ div.scrollup {
 div.scrollup:hover {
   background-color: #000; /* цвет заднего фона при наведении */
 }
-  
+
 </style>
 
 

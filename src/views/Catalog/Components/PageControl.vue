@@ -71,13 +71,17 @@ export default {
     background-color:royalblue;
   }
   .el-button--primary{
-    width: 80px;   
+    width: 80px; 
+    background-color: rgb(175, 77, 20);  
   }
   .control{
   position: relative;
   width: 100%;
   margin: 0 auto;
   text-align: center;
+  }
+  .el-loading-mask .el-loading-spinner {
+  color:mediumspringgreen;
   }
 
 </style>
