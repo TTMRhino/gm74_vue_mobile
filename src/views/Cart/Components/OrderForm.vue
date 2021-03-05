@@ -113,7 +113,7 @@ export default {
             this.submitStatus = 'ERROR'
         } else {
            
-            this.$http.post('http://127.0.0.1:8000/api/customers',  {              
+            this.$http.post('https://www.goodmarket74.ru/api/customers',  {              
 
                 name:this.name,
                 phone:this.phone,
@@ -129,7 +129,7 @@ export default {
                 const items = this.$store.getters.getCart.items;
                 console.log(items)
                         items.forEach(function(item){                           
-                            Vue.http.post('http://127.0.0.1:8000/api/orders',{
+                            Vue.http.post('https://www.goodmarket74.ru/api/orders',{
                             item:"/api/items/" + item.id,
                             quantity:item.quantity,
                             customers:"/api/customers/"+ response.body.id

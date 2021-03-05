@@ -4,6 +4,7 @@ $(document).ready(function() {
     $(function() {
             // при нажатии на кнопку scrollup
             $('.scrollup').click(function() {
+
                 // переместиться в верхнюю часть страницы
                 $("html, body").animate({
                     scrollTop: 0
@@ -16,6 +17,8 @@ $(document).ready(function() {
         if ($(this).scrollTop() > 200) {
             // то сделать кнопку scrollup видимой
             $('.scrollup').fadeIn();
+
+            //корзина прилипакет к краю
             $('.cart').css({
                 "position": "fixed",
                 "z-index": "999",
@@ -27,6 +30,8 @@ $(document).ready(function() {
         // иначе скрыть кнопку scrollup
         else {
             $('.scrollup').fadeOut();
+
+            //корзина возвращается в header
             $('.cart').css({
                 "position": "static",
                 "z-index": "999",

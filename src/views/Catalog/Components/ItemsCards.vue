@@ -9,7 +9,7 @@
         v-for="(item, index) of getItems" 
         :key="item.id"         
         >
-          <img :src="'https://whamster.ru/images/l'+ item.vendor +'.jpg'" class="image">
+          <img :src="'https://www.goodmarket74.ru/images/l'+ item.vendor +'.jpg'" class="image">
           <div style="padding: 14px;">
             <span>{{ item.item }}</span>
             <div class="bottom clearfix">

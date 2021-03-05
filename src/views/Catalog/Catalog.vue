@@ -2,47 +2,66 @@
   <div class="catalog">
   <h2 class="title">Каталог</h2>
    <!-- меню товара -->
-    <el-row>
-      <el-col :span="24">     
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"          
-          text-color="#fff"
-          active-text-color="#ffd04b"
-           :unique-opened="true"
-           
-          >
 
-<!--background-color="#af4d14"-->
-          <el-submenu index="999">
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link "  type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <span>Группы товаров</span>
+        </button>
+      </h5>
+    </div>
 
-            <template slot="title">
-              <i class="el-icon-sell"></i>              
-              <span>Группы товаров</span>
-            </template>
+    <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">        
 
-            <el-submenu :index="'' + mainGroup.id" 
-             v-for="mainGroup of getGroups" 
-             :key="mainGroup.id"             
-             >
-             <template slot="title" >{{ mainGroup.title }}</template>
+            <!-- Подменю -->
+            <div class="accordion" id="accordionMain">   
+              <div
+                v-for="mainGroup of getGroups" 
+                  :key="mainGroup.id"
+                >
 
-              <el-menu-item 
-              :index=" '1-'+subGroup.id"
-              v-for="subGroup of mainGroup['subgroup']" 
-              :key="subGroup.id"                  
-                @click="getPic('/api/items.jsonld?page=1','&subgroup='+subGroup.id)"
-              >
-              {{ subGroup.title }}
-              </el-menu-item>              
-            </el-submenu>
-            
+                <div class="card-header" :id="'heading' + mainGroup.id"  >
+                  <h5 class="mb-0">
+                 
+                    <a class="btn " 
+                    href="#"
+                    data-toggle="collapse" 
+                    :data-target="'#collapse' + mainGroup.id"                                       
+                    >
+                      {{ mainGroup.title }}
+                    </a>
+                  </h5>
+                </div>
 
-          </el-submenu>
-        </el-menu>
-      </el-col>
-    </el-row>
-
+                <div 
+                  :id="'collapse' + mainGroup.id"
+                  class="collapse"                  
+                  data-parent="#accordionMain"
+                  aria-labelledby="headingOne"                  
+                  >
+                  <div class="card-body"
+                  v-for="subGroup of mainGroup['subgroup']" 
+                  :key="subGroup.id"
+                  >
+                    <a href="#" 
+                      class="btn subGroup-title"
+                      data-parent="#accordionMain"
+                      @click="getPic('/api/items.jsonld?page=1','&subgroup='+subGroup.id)"
+                      >
+                        {{ subGroup.title }} 
+                      </a>
+                  </div>
+                </div>
+              </div> 
+            </div>
+      </div>
+    </div>
+  </div>  
+</div>
+    
        <!-- кнопки управления страницвми (перелистования) -->
       <page-control>
       </page-control>
@@ -85,9 +104,14 @@ export default {
     };    
   },
   methods:{
-    //получаем items делая API запрос к сайту  (получаем новые данные)
+    //получаем items делая API запрос к сайту  (получаем новые данные и группы )
     getPic(apiPage='/api/items.jsonld?page=1',apiGroup=''){    
-       this.$store.dispatch('asyncGetItems',{ "apiPage":apiPage,"apiGroup":apiGroup })    
+       this.$store.dispatch('asyncGetItems',{ "apiPage":apiPage,"apiGroup":apiGroup }) 
+       console.log("Close!"); 
+       
+       let el = document.getElementById('collapseOne');
+       el.classList.remove("show");
+      
     }
     
       }, 
@@ -128,9 +152,30 @@ export default {
 </script>
 
 <style scoped>
+.card-header{
+  background-color: #af4d14;
+  
+}
+.btn{
+  width: 100%;
+}
+.btn-link,.btn{
+color:#fff;
+}
+.card-body{
+  padding: 0;
+ background-color: #9b4412;
+}
+.subGroup-title{
+  
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+
+}
 
 .el-icon-sell{
-color:azure;
+color:black;
 }
 .title{
 margin-bottom: 1px;

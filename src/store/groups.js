@@ -43,7 +43,7 @@ export default {
     },
     actions: {
         asyncGetGroups(context) {
-            Vue.http.get('http://127.0.0.1:8000/api/main_groups', { headers: { 'accept': 'application/json' } })
+            Vue.http.get('https://www.goodmarket74.ru/api/main_groups', { headers: { 'accept': 'application/json' } })
                 .then(response => {
                     return response.json()
                 })
@@ -56,7 +56,7 @@ export default {
             context.commit('setItemsLoad', true)
                 //console.log('apiString = ' + apiPage + apiGroup);
 
-            Vue.http.get('http://127.0.0.1:8000' + apiPage + apiGroup)
+            Vue.http.get('https://www.goodmarket74.ru' + apiPage + apiGroup)
                 .then(response => {
                     return response.json()
                 })

@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style>
+body {
+    margin: 0px;
+    background-color: #3a3a3a;
+}
 .title{
 text-align: center;
 font-weight: bold;

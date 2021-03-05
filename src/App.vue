@@ -20,28 +20,23 @@
 
       <div id="nav">
     <!-- Nav мею -->
-  <el-col :span="24"> 
+  <el-col :span="24">
 
-    <el-menu     
-      class="el-menu-demo"
-      mode="horizontal"
-      
-      background-color="#af4d14"
-      text-color="azure"
-      active-text-color="azure">
+    
 
-      <el-submenu index="1">
-        <template slot="title"><i class="el-icon-s-order"></i></template>
-               
-        <el-menu-item index="1-1"><router-link to="/" class="link-menu">GoodMarket74</router-link></el-menu-item>
-
-        <el-menu-item index="1-2"><router-link to="/catalog" class="link-menu">Каталог</router-link></el-menu-item>
-        <el-menu-item index="1-3"><router-link to="/about" class="link-menu">О Нас</router-link></el-menu-item>
-        <el-menu-item index="1-4"><router-link to="/delivery" class="link-menu">Оплата и доставка</router-link></el-menu-item>
-        <el-menu-item index="1-5"><router-link to="/contacts" class="link-menu">Конатакты</router-link></el-menu-item>       
-        
-      </el-submenu> 
-  </el-menu>
+  <!-- NEW MENU  -->
+  <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="el-icon-s-order"></i>Меню
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <router-link to="/" class="dropdown-item link-menu">GoodMarket74</router-link>
+    <router-link to="/catalog" class="dropdown-item link-menu">Каталог</router-link>
+    <router-link to="/about" class="dropdown-item link-menu">О Нас</router-link>
+    <router-link to="/delivery" class="dropdown-item link-menu">Оплата и доставка</router-link>
+    <router-link to="/contacts" class="dropdown-item link-menu">Конатакты</router-link>    
+  </div>
+</div>
 
  </el-col>
      
@@ -89,6 +84,19 @@
 
 
 <style scoped>
+#dropdownMenuButton,.dropdown-menu{
+  width:100%;
+  background-color: #af4d14 ;
+}
+#dropdownMenuButton{
+  padding-top: 20px;
+  padding-bottom: 20px ;
+}
+.link-menu{
+   padding-top: 10px;
+  padding-bottom: 10px ;
+ 
+}
 .logo {
     width: 100%;
     margin-left: auto;
