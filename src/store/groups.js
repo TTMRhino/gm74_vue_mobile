@@ -54,7 +54,8 @@ export default {
         asyncGetItems(context, { apiPage = '/api/items.jsonld?page=1', apiGroup = '' }) {
 
             context.commit('setItemsLoad', true)
-                //console.log('apiString = ' + apiPage + apiGroup);
+            console.log('Начали загрузку !!!');
+
 
             Vue.http.get('https://www.goodmarket74.ru' + apiPage + apiGroup)
                 .then(response => {
@@ -70,7 +71,11 @@ export default {
 
                     context.commit('setFirstPage', items["hydra:view"]["hydra:first"])
                     context.commit('setLastPage', items["hydra:view"]["hydra:last"])
-                }).then(() => context.commit('setItemsLoad', false));
+                }).then(() => {
+                    context.commit('setItemsLoad', false)
+                    console.log('Закончили грузить )))');
+
+                });
 
 
 

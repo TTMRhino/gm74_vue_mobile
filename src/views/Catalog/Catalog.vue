@@ -68,7 +68,7 @@
 
         <!-- Карточка товара -->
         <items-cards 
-         v-loading.fullscreen.lock="fullscreenLoading"
+         v-loading.fullscreen.lock="$store.getters.getStatusLoading"
         
         >
         </items-cards>
@@ -97,13 +97,14 @@ export default {
   components: {PageControl,ItemsCards},
   data() {
     return {
-      currentDate: new Date(),
-     
-      fullscreenLoading:false ,
+      currentDate: new Date(),     
+      fullscreenLoading:this.$store.getters.getStatusLoading ,
+      //loading:this.$store.getters.getStatusLoading
                      
     };    
   },
   methods:{
+    
     //получаем items делая API запрос к сайту  (получаем новые данные и группы )
     getPic(apiPage='/api/items.jsonld?page=1',apiGroup=''){    
        this.$store.dispatch('asyncGetItems',{ "apiPage":apiPage,"apiGroup":apiGroup }) 
@@ -123,28 +124,22 @@ export default {
      
     }, 
     mounted(){ 
-      const loading = this.$loading({
+     /* let loading = this.$loading({
           lock: true,
           text: 'Загрузка',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)',
           
         });
-      this.$store.getters.getStatusLoading ?   '' : loading.close() ;
-
+      this.$store.getters.getStatusLoading ?   '' : loading.close() ;     */ 
+        console.log('fullscreenLoading = '+this.fullscreenLoading);
         this.$store.dispatch('asyncGetGroups'); 
             
       
     },
-    updated() {
-      const loading = this.$loading({
-          lock: true,
-          text: 'Загрузка',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)',
-          
-        });
-      this.$store.getters.getStatusLoading ?   '' : loading.close() ;
+    updated() { 
+      console.log('Обновили!')  
+      console.log('fullscreenLoading = '+this.fullscreenLoading);  
     }, 
  
 }
